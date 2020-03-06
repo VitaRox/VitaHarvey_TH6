@@ -16,6 +16,18 @@ public class IntSearchTree {
         overallRoot = null;
     }
     
+    /**
+     * A constructor which generates a BST from an array of ints;
+     * @param inputList
+     */
+    public IntSearchTree(int[] inputList) {
+        // Call no-arg constructor;
+        this();
+        // For number of elems in inputList, populate our BST;
+        for(int i = inputList.length - 1; i > 0; i--) {
+            this.add(inputList[i]);
+        }
+    }
     // Methods:
     
     /**
@@ -33,7 +45,7 @@ public class IntSearchTree {
      * @return true if "sought" is found, false if not;
      */
     public boolean contains(int sought) {
-        return contains(this.overallRoot, sought);
+        return contains(getOverallRoot(), sought);
     }
     
     /**
@@ -60,10 +72,10 @@ public class IntSearchTree {
      * @return a recursive call to its private helper method, defined below;
      */
     public int getMin() {
-        if (overallRoot == null) {
+        if (getOverallRoot() == null) {
             throw new NoSuchElementException();
         } else {
-            return getMin(overallRoot);
+            return getMin(getOverallRoot());
         }
     }
     
@@ -85,7 +97,7 @@ public class IntSearchTree {
      * @return the number of levels in the current BST;
      */
     public int countLevels () {
-        return countLevels(overallRoot);
+        return countLevels(getOverallRoot());
     }
 
     /**
@@ -105,8 +117,8 @@ public class IntSearchTree {
      * Add a value to the BST;
      * @param value the data value to add to our BST;
      */
-    public void add ( int value) {
-        overallRoot = add(overallRoot, value);
+    public void add (int value) {
+        overallRoot = add(getOverallRoot(), value);
     }
 
     /**
@@ -115,7 +127,7 @@ public class IntSearchTree {
      * @param value the value to be added to our binary search tree;
      * @return root if the value being added is a duplicate value;
      */
-    private IntTreeNode add (IntTreeNode root,int value) {
+    private IntTreeNode add (IntTreeNode root, int value) {
         if (root == null) {
             root = new IntTreeNode(value);
         } else if (value <= root.data) {
@@ -143,7 +155,7 @@ public class IntSearchTree {
     private void printInorder (IntTreeNode root) {
         if (root != null) {
             printInorder(root.left);            // Left subtree
-            System.out.println(" " + root.data);// root
+            System.out.print(" " + root.data);// root
             printInorder(root.right);           // Right subtree
         }
     }
@@ -172,7 +184,7 @@ public class IntSearchTree {
      * Remove a given value;
      * @param value, the value to be removed from our BST;
      */
-    public void remove ( int value) {
+    public void remove(int value) {
         overallRoot = remove(overallRoot, value);
     }
 
@@ -200,6 +212,37 @@ public class IntSearchTree {
             }
         }
         return root;
+    }
+    
+    // Public method is called;
+    // It begins to traverse the tree inorder at the overallRoot;
+    public int countLeftNodes() {
+        if (getOverallRoot().left == null) {
+            return 0;
+        } else {
+            return countLeftNodes(getOverallRoot());
+        }
+    }
+    
+    private int countLeftNodes(IntTreeNode in) {
+        // 'Count' is the current number of left-child nodes;
+        int count = 0;
+        
+        /*
+         Recursive case: if has a left child node, increment 'count'
+         and recursive call to itself, passing in next node to examine;
+        */
+        if (in.left != null) {
+            // Recursive call, passing in reference to next left-child node;
+            count++;
+            return countLeftNodes(in.left) + count;
+        }
+        
+        /*
+         Base case: once there are no more left-child nodes to traverse,
+         return the number of them;
+        */
+        return count;
     }
 }
 
