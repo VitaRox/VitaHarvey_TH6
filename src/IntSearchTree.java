@@ -1,3 +1,7 @@
+import java.lang.Math;
+import java.util.NoSuchElementException;
+
+
 /**
  * @author Vita.Wiebe
  * A binary search tree, a sorted version of the sequential tree class;
@@ -5,17 +9,23 @@
 public class IntSearchTree {
 
     // Fields:
-    IntTreeNode overallRoot;
+    private IntTreeNode overallRoot;
 
     // Constructors
     public IntSearchTree() {
         overallRoot = null;
     }
     
-
-
     // Methods:
-
+    
+    /**
+     * A simple getter for accessing our encapsulated field, "overallRoot";
+     * @return the overallRoot of the current BST;
+     */
+    public IntTreeNode getOverallRoot() {
+        return this.overallRoot;
+    }
+    
     /**
      * Pre: root != null;
      * Post: returns true if element is found in our BST;
@@ -25,8 +35,14 @@ public class IntSearchTree {
     public boolean contains(int sought) {
         return contains(this.overallRoot, sought);
     }
-
-    // Figure out rest of implementation of this method;
+    
+    /**
+     * A helper method for the above public version of 'contains';
+     * @param root, the root of the current branch;
+     * @param sought, the value being sought;
+     * @return false if contains nothing, true if it does contain value 'sought';
+     *          Otherwise, recursively calls itself to continue search;
+     */
     private boolean contains(IntTreeNode root, int sought) {
         if (root == null) {
             return false;
@@ -38,17 +54,46 @@ public class IntSearchTree {
             return contains(root.right, sought);
         }
     }
-
-    // Supply implementation; 1 is a dummy value;
-    public static int getMin(IntTreeNode root) {
-        return 1;
+    
+    /**
+     * Public method to find the lowest data value in our BST;
+     * @return a recursive call to its private helper method, defined below;
+     */
+    public int getMin() {
+        if (overallRoot == null) {
+            throw new NoSuchElementException();
+        } else {
+            return getMin(overallRoot);
+        }
     }
-    public int countLevels() {
-        
+    
+    /**
+     *
+     * @param root the IntTreeNode currently being inspected, the root of its own sub-tree;
+     * @return the lowest value found in our IntSearchTree;
+     */
+    private int getMin(IntTreeNode root) {
+        if (root.left == null) {
+            return root.data;
+        } else {
+            return getMin(root.left);
+        }
+    }
+    
+    /**
+     *
+     * @return the number of levels in the current BST;
+     */
+    public int countLevels () {
         return countLevels(overallRoot);
     }
 
-    private int countLevels(IntTreeNode root) {
+    /**
+     *
+     * @param root the root of the current branch;
+     * @return
+     */
+    private int countLevels (IntTreeNode root) {
         if (root == null) {
             return 0;
         } else {
@@ -56,11 +101,21 @@ public class IntSearchTree {
         }
     }
 
-    public void add(int value) {
+    /**
+     * Add a value to the BST;
+     * @param value the data value to add to our BST;
+     */
+    public void add ( int value) {
         overallRoot = add(overallRoot, value);
     }
 
-    private IntTreeNode add(IntTreeNode root, int value) {
+    /**
+     * A private helper for the public 'add';
+     * @param root the current root of the current node;
+     * @param value the value to be added to our binary search tree;
+     * @return root if the value being added is a duplicate value;
+     */
+    private IntTreeNode add (IntTreeNode root,int value) {
         if (root == null) {
             root = new IntTreeNode(value);
         } else if (value <= root.data) {
@@ -71,38 +126,63 @@ public class IntSearchTree {
         // else: a duplicate. Do nothing;
         return root;
     }
-    
-    public void printInorder() {
+
+    /**
+     * Implement an in-order traversal algorithm to print the values of the current BST in-order;
+     */
+    public void printInorder () {
         System.out.println("inorder: ");
         printInorder(overallRoot);
         System.out.println();
     }
-    
-    private void printInorder(IntTreeNode root) {
+
+    /**
+     * A private helper method for the above version of 'printInorder()";
+     * @param root the data value associated with the current node being examined;
+     */
+    private void printInorder (IntTreeNode root) {
         if (root != null) {
             printInorder(root.left);            // Left subtree
             System.out.println(" " + root.data);// root
             printInorder(root.right);           // Right subtree
         }
     }
-    
-    public void printSideways() {
+
+    /**
+     * Print the current BST in a sideways fashion to the console;
+     */
+    public void printSideways () {
         printSideways(overallRoot, "");
     }
 
-    private void printSideways(IntTreeNode root, String indent) {
+    /**
+     * A private helper for the public 'printSideways()' method;
+     * @param root root the current node being printed;
+     * @param indent the amount of indentation being added for readability & style;
+     */
+    private void printSideways (IntTreeNode root, String indent) {
         if (root != null) {
             printSideways(root.right, indent + "    ");
             System.out.println(indent + root.data);
             printSideways(root.left, indent + "    ");
         }
     }
-    
-    public void remove(int value) {
+
+    /**
+     * Remove a given value;
+     * @param value, the value to be removed from our BST;
+     */
+    public void remove ( int value) {
         overallRoot = remove(overallRoot, value);
     }
-    
-    private IntTreeNode remove(IntTreeNode root, int value) {
+
+    /**
+     * A private helper for the above 'remove()' method;
+     * @param root the current node being examined,
+     * @param value, the value to remove from our BST;
+     * @return IntTreeNode being removed;
+     */
+    private IntTreeNode remove (IntTreeNode root, int value) {
         if (root == null) {
             return null;
         } else if (root.data > value) {
@@ -116,11 +196,10 @@ public class IntSearchTree {
                 return root.right;
             } else {
                 root.data = getMin(root.right);
-                root.right = remove();
+                root.right = remove(root.right, root.data);
             }
         }
+        return root;
     }
-    
-
-
 }
+
