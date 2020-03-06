@@ -214,8 +214,11 @@ public class IntSearchTree {
         return root;
     }
     
-    // Public method is called;
-    // It begins to traverse the tree inorder at the overallRoot;
+    /**
+     * Traverse the IntSearchTree starting with the overallRoot node,
+     * counting number of left-child nodes;
+     * @return the total number of left-child nodes in the BST;
+     */
     public int countLeftNodes() {
         if (getOverallRoot().left == null) {
             return 0;
@@ -224,6 +227,12 @@ public class IntSearchTree {
         }
     }
     
+    /**
+     * A private, recursive helper method;
+     * This works by
+     * @param in
+     * @return
+     */
     private int countLeftNodes(IntTreeNode in) {
         // 'Count' is the current number of left-child nodes;
         int count = 0;
