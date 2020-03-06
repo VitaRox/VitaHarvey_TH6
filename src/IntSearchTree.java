@@ -229,9 +229,11 @@ public class IntSearchTree {
     
     /**
      * A private, recursive helper method;
-     * This works by
-     * @param in
-     * @return
+     * This works by traversing the nodes of the tree, counting when a given node has
+     * a left-child node and recursively calling itself until there are no more nodes to
+     * search, at which point the number of these is returned;
+     * @param in the current IntTreeNode being inspected by our algorithm;
+     * @return the running tally that is the current state of 'count';
      */
     private int countLeftNodes(IntTreeNode in) {
         // 'Count' is the current number of left-child nodes;
