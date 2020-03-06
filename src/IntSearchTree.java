@@ -255,5 +255,30 @@ public class IntSearchTree {
         */
         return count;
     }
+    
+    /**
+     * Public isFull() method begins traversing the BST starting from its overallRoot
+     * @return true if our IntSearchTree is 'full', or has only nodes
+     * containing 0 or 2 child nodes;
+     */
+    public boolean isFull() {
+        return isFull(getOverallRoot());
+    }
+    
+    /**
+     * Private helper isFull() method that inspects the current node, treating
+     * it as the root of its own subtree;
+     * @param root
+     * @return false if a non-full subtree is found;
+     */
+    private boolean isFull(IntTreeNode root) {
+        // Base case: if node that isn't full OR a leaf is found, return false;
+        if ((root.left == null && root.right != null) || (root.right == null && root.left != null)) {
+            return false;
+        } else {
+            return isFull(root.left) && isFull(root.right);
+        }
+    }
+    
 }
 

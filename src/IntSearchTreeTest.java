@@ -35,7 +35,7 @@ public class IntSearchTreeTest {
 		// Demonstrate countLeftNodes() method:
 		System.out.println("Overall root of test2: " + test1.getOverallRoot().data);
 		System.out.println("The number of left nodes is "  + test1.countLeftNodes()); // test1.countLeftNodes()
-		System.out.println("This is a full binary tree: "); // test1.isFull()
+		System.out.println("This is a full binary tree: " +  test1.isFull());
 		System.out.println();
 		System.out.println();
 		
@@ -55,7 +55,7 @@ public class IntSearchTreeTest {
 		// Demonstrate countLeftNodes() method:
 		System.out.println("Overall root of test2: " + test2.getOverallRoot().data);
 		System.out.println("The number of left nodes is " + test2.countLeftNodes());
-		System.out.println("This is a full binary tree: "); // test2.isFull()
+		System.out.println("This is a full binary tree: " + test2.isFull());
 		System.out.println();
 		System.out.println();
 	}
