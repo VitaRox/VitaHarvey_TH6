@@ -131,12 +131,12 @@ public class IntSearchTree {
     private IntTreeNode add (IntTreeNode root, int value) {
         if (root == null) {
             root = new IntTreeNode(value);
-        } else if (value <= root.data) {
+        } else if (root.data > value) {
             root.left = add(root.left, value);
-        } else {
+        } else if (root.data < value){
             root.right = add(root.right, value);
         }
-        // else: a duplicate. Do nothing;
+        // else: a duplicate. Do nothing (don't add);
         return root;
     }
 
@@ -221,11 +221,8 @@ public class IntSearchTree {
      * @return the total number of left-child nodes in the BST;
      */
     public int countLeftNodes() {
-        if (getOverallRoot().left == null) {
-            return 0;
-        } else {
-            return countLeftNodes(getOverallRoot());
-        }
+        // Recursive call to helper method, passing in the root of the whole tree;
+        return countLeftNodes(getOverallRoot());
     }
     
     /**
@@ -233,28 +230,23 @@ public class IntSearchTree {
      * This works by traversing the nodes of the tree, counting when a given node has
      * a left-child node and recursively calling itself until there are no more nodes to
      * search, at which point the number of these is returned;
-     * @param in the current IntTreeNode being inspected by our algorithm;
+     * @param currRoot the current IntTreeNode being inspected by our algorithm;
      * @return the running tally that is the current state of 'count';
      */
-    private int countLeftNodes(IntTreeNode in) {
-        // 'Count' is the current number of left-child nodes;
-        int count = 0;
-        
-        /*
-         Recursive case: if has a left child node, increment 'count'
-         and recursive call to itself, passing in next node to examine;
-        */
-        if (in.left != null) {
-            // Recursive call, passing in reference to next left-child node;
-            count++;
-            return countLeftNodes(in.left) + count;
+    private int countLeftNodes(IntTreeNode currRoot) {
+        // Base case: current root is null (has no children);
+        if (currRoot == null) {
+            return 0;
+        // Recursive case: if the current root has no left child node, begin inspecting the right child node;
+        } else if (currRoot.left == null) {
+            // Recursive call, passing in reference to next right-child node;
+            return countLeftNodes(currRoot.right);
         }
-        
         /*
-         Base case: once there are no more left-child nodes to traverse,
-         return the number of them;
+         Recursive case: if current node has a left child node, increment that count by one and add to
+         the sum of the left nodes of the prior-inspected subtrees, left and right;
         */
-        return count;
+        return 1 + countLeftNodes(currRoot.left) + countLeftNodes(currRoot.right);
     }
     
     /**
@@ -274,12 +266,31 @@ public class IntSearchTree {
      */
     private boolean isFull(IntTreeNode root) {
         // Base case: if node that isn't full OR a leaf is found, return false;
-        if ((root.left == null && root.right != null) || (root.right == null && root.left != null)) {
-            return false;
+        if (root.left == null) {
+            if (root.right != null) {
+                return false;
+            } else {
+                return true;
+            }
+        } else if (root.right == null) {
+            if (root.left != null) {
+                return false;
+            } else {
+                return true;
+            }
         } else {
-            return isFull(root.left) && isFull(root.right);
+            return true;
         }
+    
     }
+//        if ((root.left == null && root.right != null) || (root.right == null && root.left != null)) {
+//            return false;
+//        } else if (root.left == null) {
+//            return isFull(root.right);
+//        } else if (root.right == null) {
+//            return isFull(root.right )
+//        }
+
     
 }
 
