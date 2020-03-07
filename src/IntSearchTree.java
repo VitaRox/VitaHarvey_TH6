@@ -24,10 +24,11 @@ public class IntSearchTree {
         // Call no-arg constructor;
         this();
         // For number of elems in inputList, populate our BST;
-        for(int i = inputList.length - 1; i > 0; i--) {
+        for(int i = 0; i < inputList.length; i++) {
             this.add(inputList[i]);
         }
     }
+    
     // Methods:
     
     /**
